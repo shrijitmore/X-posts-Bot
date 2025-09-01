@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twitter Bot</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <h1 class="text-2xl font-bold mb-4">🐦 Twitter Bot</h1>
+
+    <!-- Post Tweet Immediately -->
+    <form action="/tweet/post" method="POST" class="mb-6">
+      <textarea name="text" placeholder="Write your tweet..." class="w-full border p-2 rounded mb-2" required></textarea>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Post Now</button>
+    </form>
+
+    <!-- Schedule AI Tweet -->
+    <form action="/tweet/schedule" method="POST" class="mb-6">
+      <textarea name="text" placeholder="Enter news or prompt for AI to generate tweet..." class="w-full border p-2 rounded mb-2" required></textarea>
+      <p class="text-gray-500 text-sm mb-2">🧠 If you choose daily, AI will generate a unique tweet each day from this prompt.</p>
+
+      <label class="block mb-1">Schedule Type:</label>
+      <select name="scheduleType" class="w-full border p-2 rounded mb-2" required>
+        <option value="everyMinute">Every Minute</option>
+        <option value="hourly">Every Hour</option>
+        <option value="daily">Every Day</option>
+        <option value="weekly">Every Week</option>
+        <option value="custom">Custom Cron</option>
+      </select>
+
+      <div id="timeInput" class="mb-2 hidden">
+        <label class="block mb-1">Pick Time:</label>
+        <input type="time" name="time" class="w-full border p-2 rounded" />
+      </div>
+
+      <div id="customInput" class="mb-2 hidden">
+        <label class="block mb-1">Custom Cron:</label>
+        <input type="text" name="customCron" placeholder="e.g. */5 * * * *" class="w-full border p-2 rounded" />
+      </div>
+
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">📌 Schedule AI Tweet</button>
+    </form>
+
+    <!-- Scheduled Tweets List -->
+    <h2 class="text-xl font-semibold mb-2">📅 Scheduled Tweets</h2>
+    <% if (tweets && tweets.length > 0) { %>
+      <ul class="space-y-3">
+        <% tweets.forEach(tweet => { %>
+          <li class="flex justify-between items-center bg-gray-50 p-3 rounded border">
+            <div>
+              <p class="font-medium"><%= tweet.text %></p>
+              <p class="text-sm text-gray-500">
+                Type: <%= tweet.schedule_type %> |
+                Cron: <%= tweet.cron_time %> |
+                Status: <span class="font-semibold"><%= tweet.status %></span>
+              </p>
+            </div>
+            <% if (tweet.status === "scheduled") { %>
+              <form method="POST" action="/cancel/<%= tweet.id %>">
+                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                  Cancel
+                </button>
+              </form>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="text-gray-500">No scheduled tweets yet.</p>
+    <% } %>
+
+  </div>
+
+  <script>
+    const scheduleSelect = document.querySelector('select[name="scheduleType"]');
+    const timeInput = document.getElementById("timeInput");
+    const customInput = document.getElementById("customInput");
+
+    scheduleSelect.addEventListener("change", () => {
+      timeInput.classList.toggle("hidden", !(scheduleSelect.value === "daily" || scheduleSelect.value === "weekly"));
+      customInput.classList.toggle("hidden", scheduleSelect.value !== "custom");
+    });
+  </script>
+</body>
+</html>

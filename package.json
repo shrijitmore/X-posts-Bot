@@ -1,0 +1,35 @@
+{
+  "name": "twitterbot",
+  "version": "1.0.0",
+  "description": "Automating a Twitter Posts",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shrijitmore/Twitter-Bot.git"
+  },
+  "keywords": [
+    "Bot",
+    "AI"
+  ],
+  "author": "Shrijit More",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shrijitmore/Twitter-Bot/issues"
+  },
+  "homepage": "https://github.com/shrijitmore/Twitter-Bot#readme",
+  "dependencies": {
+    "@google/genai": "^1.16.0",
+    "@google/generative-ai": "^0.24.1",
+    "@supabase/supabase-js": "^2.56.1",
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "node-cron": "^4.2.1",
+    "twitter-api-v2": "^1.25.0"
+  }
+}
