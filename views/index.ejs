@@ -97,75 +97,78 @@
   </div>
 
   <script>
-    // Function to update rate limit status
     async function updateRateLimitStatus() {
       try {
         const response = await fetch('/tweet/rate-status');
         const data = await response.json();
-        
+
         if (data.success) {
           const statusEl = document.getElementById('statusText');
           const indicatorEl = document.getElementById('statusIndicator');
           const progressBar = document.getElementById('progressBar');
           const remainingEl = document.getElementById('remainingTweets');
           const resetTimeEl = document.getElementById('resetTime');
-          
+
           const remaining = data.remaining;
           const limit = data.limit;
           const percentage = (remaining / limit) * 100;
-          
+
           // Update status text and color
           if (data.status === 'OK') {
             statusEl.textContent = data.message;
             indicatorEl.className = 'w-4 h-4 rounded-full mr-2 bg-green-500';
-            progressBar.className = 'h-2.5 rounded-full ' + 
+            progressBar.className = 'h-2.5 rounded-full ' +
               (percentage > 50 ? 'bg-green-500' : percentage > 20 ? 'bg-yellow-500' : 'bg-red-500');
           } else {
             statusEl.textContent = data.message;
             indicatorEl.className = 'w-4 h-4 rounded-full mr-2 bg-red-500';
             progressBar.className = 'h-2.5 rounded-full bg-red-500';
           }
-          
+
           // Update progress bar
           progressBar.style.width = `${percentage}%`;
-          
+
           // Update remaining tweets and reset time
           remainingEl.textContent = `${remaining} of ${limit} tweets remaining`;
-          
+
           if (data.resetTime) {
             const resetDate = new Date(data.resetTime);
             resetTimeEl.textContent = `Resets: ${resetDate.toLocaleTimeString()}`;
           }
-          
-          // Disable buttons if rate limit reached
-          const buttons = document.querySelectorAll('button[type="submit"]');
-          buttons.forEach(button => {
-            button.disabled = data.status !== 'OK';
+
+          // Only disable "Post Now" button if rate limit reached
+          const postNowBtn = document.querySelector('form[action="/tweet/post"] button[type="submit"]');
+          if (postNowBtn) {
+            postNowBtn.disabled = data.status !== 'OK';
             if (data.status !== 'OK') {
-              button.classList.add('opacity-50', 'cursor-not-allowed');
+              postNowBtn.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
-              button.classList.remove('opacity-50', 'cursor-not-allowed');
+              postNowBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
-          });
+          }
+
+          // Always enable "Schedule AI Tweet" button
+          const scheduleBtn = document.querySelector('form[action="/tweet/schedule"] button[type="submit"]');
+          if (scheduleBtn) {
+            scheduleBtn.disabled = false;
+            scheduleBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          }
         }
       } catch (error) {
         console.error('Error fetching rate limit status:', error);
       }
     }
-    
-    // Function to manually refresh rate limit status
+
     function refreshRateLimit() {
       document.getElementById('statusText').textContent = 'Refreshing...';
       updateRateLimitStatus();
     }
-    
-    // Update rate limit status on page load
+
     document.addEventListener('DOMContentLoaded', () => {
       updateRateLimitStatus();
-      
-      // Update every 5 minutes
       setInterval(updateRateLimitStatus, 5 * 60 * 1000);
     });
+
     const scheduleSelect = document.querySelector('select[name="scheduleType"]');
     const timeInput = document.getElementById("timeInput");
     const customInput = document.getElementById("customInput");

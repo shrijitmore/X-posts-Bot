@@ -109,112 +109,85 @@ async function processQueue() {
   const job = jobQueue.shift();
   try {
     console.log("⏰ Generating tweet content...");
-    
-    // Use custom prompt if provided, otherwise use the text field
     const prompt = job.custom_prompt || job.text || "Share an interesting tech insight";
     const tweetResult = await generateTweet(prompt, job.include_image);
 
     if (!tweetResult || !tweetResult.text) throw new Error("AI failed to generate tweet");
     const tweetText = tweetResult.text;
 
-    // Check if we need to include an image
     let mediaId = null;
     if (job.include_image) {
       console.log("🖼️ Processing image for tweet...");
-      
-      // Get image URL (from job or generate one)
       const imageUrl = job.image_url || await generateImage(job.image_prompt || prompt);
-      
       if (imageUrl) {
-        // Download the image
         const imagePath = path.join(__dirname, '../uploads', `image-${Date.now()}.jpg`);
         await downloadImage(imageUrl, imagePath);
-        
-        // Upload to Twitter
         console.log("📤 Uploading image to Twitter...");
         const mediaUpload = await client.v1.uploadMedia(imagePath);
         mediaId = mediaUpload;
-        
-        // Clean up the file
         fs.unlinkSync(imagePath);
       }
     }
 
     // Try to post tweet with retry logic for rate limiting
-    await postTweetWithRetry(tweetText, job, mediaId);
-    
+    const postResult = await postTweetWithRetry(tweetText, job, mediaId);
+
+    if (postResult === "RATE_LIMIT_REACHED") {
+      // Reschedule the job for the next interval
+      console.log("🔄 Rate limit reached, rescheduling tweet...");
+      setTimeout(() => {
+        jobQueue.push(job);
+        processQueue();
+      }, getIntervalMs(job.cron_time) || 60 * 1000); // fallback to 1 min
+      return;
+    }
+
     // Save tweet history to database for persistence
     try {
       const historyData = {
         text: tweetText,
         created_at: new Date().toISOString()
       };
-      
-      // Include image information if available
       if (mediaId) {
         historyData.has_image = true;
         historyData.image_prompt = job.image_prompt || prompt;
       }
-      
-      await supabase
-        .from("tweet_history")
-        .insert([historyData])
-        .select();
+      await supabase.from("tweet_history").insert([historyData]).select();
     } catch (err) {
-      // Non-critical error, just log it
       console.warn("⚠️ Failed to save tweet to history:", err.message);
     }
 
     console.log("✅ AI Tweet posted:", tweetText);
   } catch (err) {
     console.error("❌ Tweet failed:", err.message);
-    await supabase
-      .from("scheduled_tweets")
-      .update({ status: "failed" })
-      .eq("id", job.id);
+    await supabase.from("scheduled_tweets").update({ status: "failed" }).eq("id", job.id);
   } finally {
     isProcessing = false;
-    setTimeout(processQueue, 1000); // check queue again
+    setTimeout(processQueue, 1000);
   }
 }
 
 // ---- Post tweet with retry logic for rate limiting ----
 async function postTweetWithRetry(tweetText, job, mediaId = null, retryCount = 0) {
-  const MAX_RETRIES = 3;
-  const RETRY_DELAY = 60000; // 1 minute delay between retries
-  
   try {
-    // Create tweet options
+    const rateStatus = await updateRateLimitStatus();
+    if (rateStatus && rateStatus.daily.remaining <= 0) {
+      return "RATE_LIMIT_REACHED";
+    }
+
     const tweetOptions = {};
-    
-    // Add media if available
     if (mediaId) {
       tweetOptions.media = { media_ids: [mediaId] };
     }
-    
-    // Post the tweet
     await client.v2.tweet(tweetText, tweetOptions);
-    
-    // Update status in database on success
+
     await supabase
       .from("scheduled_tweets")
       .update({ status: "sent", text: tweetText })
       .eq("id", job.id);
-      
+
     return true;
   } catch (error) {
-    // Handle rate limiting (429 error)
-    if (error.code === 429 && retryCount < MAX_RETRIES) {
-      console.log(`⚠️ Rate limited by Twitter API. Retrying in ${RETRY_DELAY/1000} seconds... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
-      
-      // Wait for the retry delay
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
-      
-      // Recursive retry
-      return postTweetWithRetry(tweetText, job, mediaId, retryCount + 1);
-    }
-    
-    // If we've exhausted retries or it's another error, rethrow
     throw error;
   }
 }
@@ -394,25 +367,35 @@ router.post("/post", upload.single('image'), async (req, res) => {
 
 router.post("/schedule", upload.single('image'), async (req, res) => {
   try {
-    const { text, scheduleType, customPrompt, imagePrompt, includeImage } = req.body;
+    const { text, scheduleType, customPrompt, imagePrompt, includeImage, customCron, time } = req.body;
     if (!scheduleType) return res.status(400).send("scheduleType required");
 
-    let cronTime = scheduleType === "everyMinute" ? "*/1 * * * *" : 
-                  scheduleType === "hourly" ? "0 * * * *" : null;
-    if (!cronTime) return res.status(400).send("Unsupported schedule type");
+    let cronTime;
+    if (scheduleType === "everyMinute") {
+      cronTime = "*/1 * * * *";
+    } else if (scheduleType === "hourly") {
+      cronTime = "0 * * * *";
+    } else if (scheduleType === "daily") {
+      // If time is provided, use it, otherwise default to midnight
+      const [hour, minute] = (time || "00:00").split(":");
+      cronTime = `${minute} ${hour} * * *`;
+    } else if (scheduleType === "weekly") {
+      // Default to Sunday at midnight, or use provided time
+      const [hour, minute] = (time || "00:00").split(":");
+      cronTime = `${minute} ${hour} * * 0`;
+    } else if (scheduleType === "custom" && customCron) {
+      cronTime = customCron;
+    } else {
+      return res.status(400).send("Unsupported schedule type");
+    }
 
     // Process image if provided
     let imageUrl = null;
     if (req.file) {
-      // Save the image to Supabase storage or another storage service
-      // For now, we'll just use a placeholder URL
       imageUrl = "https://picsum.photos/800/600";
-      
-      // Clean up the file
       fs.unlinkSync(req.file.path);
     }
 
-    // Allow scheduling with either predefined text or AI-generated content
     const scheduleData = {
       schedule_type: scheduleType,
       cron_time: cronTime,
@@ -422,46 +405,20 @@ router.post("/schedule", upload.single('image'), async (req, res) => {
       image_url: imageUrl,
       image_prompt: imagePrompt || null
     };
-    
-    // If text is provided, use it directly instead of AI generation
     if (text) {
       scheduleData.text = text;
     }
 
-    const rateStatus = await updateRateLimitStatus();
-    if (rateStatus && rateStatus.daily.remaining <= 0) {
-      const resetTime = new Date(rateStatus.daily.reset);
-      const hoursUntilReset = Math.ceil((rateStatus.daily.reset - Date.now()) / (1000 * 60 * 60));
-      
-      return res.status(429).json({
-        success: false,
-        error: "RATE_LIMIT_REACHED",
-        message: `Daily tweet limit reached. You've used all ${rateStatus.daily.limit} tweets.`,
-        resetTime: resetTime.toISOString(),
-        timeUntilReset: `${hoursUntilReset} hours`,
-        limit: rateStatus.daily.limit,
-        remaining: 0
-      });
-    }
+    // Remove rate limit check here!
 
-    // Add to database
     const { data, error } = await supabase
       .from("scheduled_tweets")
-      .insert([{
-        text, 
-        status: "scheduled",
-        rate_limit_status: JSON.stringify(rateLimitStatus)
-      }])
+      .insert([scheduleData])
       .select();
 
     if (error) {
       console.error(" Database error:", error);
       return res.status(500).send("Failed to schedule tweet");
-    }
-    
-    // Update rate limit status after successful scheduling
-    if (rateLimitStatus.daily.remaining > 0) {
-      rateLimitStatus.daily.remaining--;
     }
 
     scheduleTweetJob(data[0]);
