@@ -257,11 +257,97 @@ async function loadScheduledTweets() {
 
 loadScheduledTweets();
 
+// Track rate limit status
+let rateLimitStatus = {
+  daily: {
+    limit: 17,
+    remaining: 17,
+    reset: 0
+  },
+  lastUpdated: 0
+};
+
+// Update rate limit status
+async function updateRateLimitStatus() {
+  try {
+    const rateLimits = await client.v2.tweet('dummy', { dry_run: true })
+      .catch(error => error.rateLimit || null);
+      
+    if (rateLimits?.day) {
+      rateLimitStatus = {
+        daily: {
+          limit: rateLimits.day.limit,
+          remaining: rateLimits.day.remaining,
+          reset: rateLimits.day.reset * 1000 // Convert to milliseconds
+        },
+        lastUpdated: Date.now()
+      };
+    }
+    return rateLimitStatus;
+  } catch (error) {
+    console.error("Failed to update rate limit status:", error);
+    return null;
+  }
+}
+
+// ---- Get Rate Limits ----
+router.get("/rate-status", async (req, res) => {
+  try {
+    const status = await updateRateLimitStatus();
+    if (!status) {
+      return res.status(500).json({
+        success: false,
+        error: "Failed to get rate limit status"
+      });
+    }
+
+    const now = Date.now();
+    const resetTime = new Date(status.daily.reset);
+    const timeUntilReset = Math.max(0, status.daily.reset - now);
+    
+    res.json({
+      success: true,
+      limit: status.daily.limit,
+      remaining: status.daily.remaining,
+      reset: status.daily.reset,
+      resetTime: resetTime.toISOString(),
+      timeUntilReset: timeUntilReset,
+      status: status.daily.remaining > 0 ? "OK" : "RATE_LIMIT_REACHED",
+      message: status.daily.remaining > 0 
+        ? `You have ${status.daily.remaining} tweets remaining today.`
+        : `Daily limit reached. Resets in ${Math.ceil(timeUntilReset / (1000 * 60 * 60))} hours.`
+    });
+  } catch (error) {
+    console.error("Rate limit check failed:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // ---- API Endpoints ----
 router.post("/post", upload.single('image'), async (req, res) => {
   try {
     const { text, imagePrompt } = req.body;
     if (!text) return res.status(400).send("Text required");
+    
+    // Check rate limits before attempting to post
+    const rateStatus = await updateRateLimitStatus();
+    if (rateStatus && rateStatus.daily.remaining <= 0) {
+      const resetTime = new Date(rateStatus.daily.reset);
+      const hoursUntilReset = Math.ceil((rateStatus.daily.reset - Date.now()) / (1000 * 60 * 60));
+      
+      return res.status(429).json({
+        success: false,
+        error: "RATE_LIMIT_REACHED",
+        message: `Daily tweet limit reached. You've used all ${rateStatus.daily.limit} tweets.`,
+        resetTime: resetTime.toISOString(),
+        timeUntilReset: `${hoursUntilReset} hours`,
+        limit: rateStatus.daily.limit,
+        remaining: 0
+      });
+    }
     
     // Handle image if provided
     let mediaId = null;
@@ -342,22 +428,52 @@ router.post("/schedule", upload.single('image'), async (req, res) => {
       scheduleData.text = text;
     }
 
+    const rateStatus = await updateRateLimitStatus();
+    if (rateStatus && rateStatus.daily.remaining <= 0) {
+      const resetTime = new Date(rateStatus.daily.reset);
+      const hoursUntilReset = Math.ceil((rateStatus.daily.reset - Date.now()) / (1000 * 60 * 60));
+      
+      return res.status(429).json({
+        success: false,
+        error: "RATE_LIMIT_REACHED",
+        message: `Daily tweet limit reached. You've used all ${rateStatus.daily.limit} tweets.`,
+        resetTime: resetTime.toISOString(),
+        timeUntilReset: `${hoursUntilReset} hours`,
+        limit: rateStatus.daily.limit,
+        remaining: 0
+      });
+    }
+
+    // Add to database
     const { data, error } = await supabase
       .from("scheduled_tweets")
-      .insert([scheduleData])
+      .insert([{
+        text, 
+        status: "scheduled",
+        rate_limit_status: JSON.stringify(rateLimitStatus)
+      }])
       .select();
 
-    if (error) throw error;
+    if (error) {
+      console.error(" Database error:", error);
+      return res.status(500).send("Failed to schedule tweet");
+    }
+    
+    // Update rate limit status after successful scheduling
+    if (rateLimitStatus.daily.remaining > 0) {
+      rateLimitStatus.daily.remaining--;
+    }
 
     scheduleTweetJob(data[0]);
-    res.render("success", { message: "✅ Tweet scheduled!" });
+    res.render("success", { message: " Tweet scheduled!" });
   } catch (err) {
-    res.render("error", { message: `❌ ${err.message}` });
+    res.render("error", { message: ` ${err.message}` });
   }
 });
 
 router.get("/scheduled", async (req, res) => {
   const { data, error } = await supabase.from("scheduled_tweets").select("*");
+  if (error) return res.render("error", { message: ` ${error.message}` });
   if (error) return res.render("error", { message: `❌ ${error.message}` });
   res.render("scheduled", { tweets: data });
 });
