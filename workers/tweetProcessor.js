@@ -77,10 +77,18 @@ class TweetProcessor {
   }
 
   async processScheduledTweet(job) {
-    const { scheduleData } = job.data;
-    logger.info(`Processing scheduled tweet job: ${job.id}`, scheduleData);
+    logger.info(`Processing scheduled tweet job: ${job.id}`, { jobData: job.data });
 
     try {
+      // Handle both direct data and nested scheduleData for backward compatibility
+      const scheduleData = job.data.scheduleData || job.data;
+      
+      // Check if we have valid job data
+      if (!scheduleData) {
+        logger.error('Invalid job data for scheduled tweet:', job.data);
+        throw new Error('Invalid job data - missing schedule data');
+      }
+      
       // Check if we can post (rate limits)
       const canPost = await queueService.canProcessTweet();
       if (!canPost) {
@@ -89,7 +97,7 @@ class TweetProcessor {
         throw new Error('Daily rate limit reached');
       }
 
-      let tweetText = scheduleData.text;
+      let tweetText = scheduleData.text || scheduleData.custom_prompt;
 
       // Generate AI tweet if needed
       if (scheduleData.custom_prompt || !tweetText) {

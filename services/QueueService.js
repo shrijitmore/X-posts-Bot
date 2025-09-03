@@ -111,7 +111,12 @@ class QueueService {
   // Add scheduled tweet to queue
   async addScheduledTweetJob(scheduleData, cronExpression) {
     try {
-      const job = await this.scheduledTweetQueue.add('process-scheduled-tweet', scheduleData, {
+      // Structure the job data to match what processScheduledTweet expects
+      const jobData = {
+        scheduleData: scheduleData
+      };
+      
+      const job = await this.scheduledTweetQueue.add('process-scheduled-tweet', jobData, {
         repeat: { cron: cronExpression },
         removeOnComplete: true,
         removeOnFail: true,

@@ -247,11 +247,18 @@ router.post('/schedule', upload.single('image'), async (req, res) => {
 
     const scheduledTweet = await databaseService.createScheduledTweet(scheduleData);
 
-    // Add to scheduled tweet queue
-    await queueService.addScheduledTweetJob({
-      ...scheduleData,
+    // Add to scheduled tweet queue with properly structured data
+    const jobData = {
       id: scheduledTweet.id,
-    }, cronTime);
+      schedule_type: scheduleType,
+      custom_prompt: customPrompt || null,
+      include_image: includeImage === 'true' || includeImage === true,
+      image_prompt: imagePrompt || null,
+      text: text || null,
+      status: 'scheduled'
+    };
+    
+    await queueService.addScheduledTweetJob(jobData, cronTime);
 
     logger.info('Tweet scheduled successfully:', scheduledTweet.id);
     res.render('success', { 

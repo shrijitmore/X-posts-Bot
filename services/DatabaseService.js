@@ -60,10 +60,16 @@ class DatabaseService {
 
   async updateScheduledTweet(id, updates) {
     try {
+      if (!id) {
+        throw new Error('Missing required parameter: id');
+      }
+
       const updateData = {
         ...updates,
         updated_at: new Date().toISOString(),
       };
+
+      logger.debug('Updating scheduled tweet:', { id, updateData });
 
       const { data, error } = await supabase
         .from(this.tables.scheduledTweets)
@@ -72,12 +78,28 @@ class DatabaseService {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        logger.error('Supabase update error:', {
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+          message: error.message
+        });
+        throw error;
+      }
 
-      logger.info('Scheduled tweet updated:', id);
+      if (!data) {
+        throw new Error(`No scheduled tweet found with id: ${id}`);
+      }
+
+      logger.info('Scheduled tweet updated successfully:', id);
       return data;
     } catch (error) {
-      logger.error('Failed to update scheduled tweet:', error.message);
+      logger.error('Failed to update scheduled tweet:', {
+        id,
+        error: error.message,
+        stack: error.stack
+      });
       throw error;
     }
   }
