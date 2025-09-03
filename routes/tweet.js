@@ -28,35 +28,19 @@ const upload = multer({
   },
 });
 
-// ---- Generate AI tweet from any prompt ----
-async function generateTweet(prompt, includeImage = false) {
+// ---- Rate Limit Status ----
+router.get('/rate-status', async (req, res) => {
   try {
-    // Get previous tweets to provide as context
-    const previousTweetsContext = previousTweets.length > 0 
-      ? `Previous tweets (DO NOT repeat these): ${previousTweets.join(" | ")}` 
-      : "";
-    
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: `Write a concise, engaging Twitter post about: ${prompt}. 
-      Be informative, creative and original. Keep it under 280 characters.
-      ${previousTweetsContext}`,
+    const status = await twitterService.getRateLimitStatus();
+    res.json(status);
+  } catch (error) {
+    logger.error('Rate limit check failed:', error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message,
     });
-    
-    const tweetText = response.text.slice(0, 280);
-    
-    // Store this tweet in history to avoid repetition
-    previousTweets.unshift(tweetText);
-    if (previousTweets.length > MAX_HISTORY) {
-      previousTweets.pop();
-    }
-    
-    return { text: tweetText, includeImage };
-  } catch (err) {
-    console.error("❌ AI generation failed:", err.message);
-    return null;
   }
-}
+});
 
 // ---- Generate image based on prompt ----
 async function generateImage(prompt) {
