@@ -1,14 +1,17 @@
-// Scheduling.js
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { TwitterApi } = require("twitter-api-v2");
-const supabase = require("../supabaseClient");
-const { GoogleGenAI } = require("@google/genai");
-const fs = require("fs");
-const path = require("path");
-const axios = require("axios");
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Import services and utilities
+const twitterService = require('../services/TwitterService');
+const aiService = require('../services/AIService');
+const databaseService = require('../services/DatabaseService');
+const queueService = require('../services/QueueService');
+const { validate, schemas } = require('../utils/validation');
+const logger = require('../utils/logger');
+const config = require('../config');
 
 // Gemini AI client
 const ai = new GoogleGenAI({});
