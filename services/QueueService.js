@@ -46,8 +46,8 @@ class QueueService {
 
     this.scheduledTweetQueue = new Queue('scheduled tweets', {
       redis: {
-        host: config.redis.host,
         port: config.redis.port,
+        host: config.redis.host,
         password: config.redis.password,
       },
       defaultJobOptions: {
