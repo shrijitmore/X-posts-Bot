@@ -37,6 +37,11 @@ const upload = multer({
 // ---- Rate Limit Status ----
 router.get('/rate-status', async (req, res) => {
   try {
+    if (config.isDemoMode) {
+      res.json(demoService.getDemoRateLimitStatus());
+      return;
+    }
+    
     const status = await twitterService.getRateLimitStatus();
     res.json(status);
   } catch (error) {
