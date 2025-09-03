@@ -9,8 +9,16 @@ const rateLimit = require('express-rate-limit');
 // Import services and configuration
 const config = require('./config');
 const logger = require('./utils/logger');
-const tweetProcessor = require('./workers/tweetProcessor');
-const databaseService = require('./services/DatabaseService');
+const demoService = require('./services/DemoService');
+
+// Only import real services if not in demo mode
+let tweetProcessor, databaseService;
+if (!config.isDemoMode) {
+  tweetProcessor = require('./workers/tweetProcessor');
+  databaseService = require('./services/DatabaseService');
+} else {
+  demoService.showConfigurationMessage();
+}
 
 const app = express();
 
