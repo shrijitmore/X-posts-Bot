@@ -69,14 +69,22 @@ app.use('/dashboard', dashboardRoutes);
 // Home route with enhanced dashboard
 app.get('/', async (req, res) => {
   try {
-    const [scheduledTweets, tweetStats] = await Promise.all([
-      databaseService.getScheduledTweets(),
-      databaseService.getTweetStats(),
-    ]);
+    let scheduledTweets, tweetStats;
+    
+    if (config.isDemoMode) {
+      scheduledTweets = demoService.getDemoTweets();
+      tweetStats = demoService.getDemoStats();
+    } else {
+      [scheduledTweets, tweetStats] = await Promise.all([
+        databaseService.getScheduledTweets(),
+        databaseService.getTweetStats(),
+      ]);
+    }
 
     res.render('index', { 
       tweets: scheduledTweets,
       stats: tweetStats,
+      isDemoMode: config.isDemoMode,
     });
   } catch (error) {
     logger.error('Error loading dashboard:', error.message);
@@ -84,6 +92,7 @@ app.get('/', async (req, res) => {
       tweets: [],
       stats: { todayTweets: 0, totalTweets: 0, scheduledTweets: 0 },
       error: 'Failed to load dashboard data',
+      isDemoMode: config.isDemoMode,
     });
   }
 });
