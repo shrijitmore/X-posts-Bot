@@ -100,12 +100,24 @@ app.get('/', async (req, res) => {
 // Health check endpoint
 app.get('/health', async (req, res) => {
   try {
+    if (config.isDemoMode) {
+      res.json({
+        status: 'healthy',
+        mode: 'demo',
+        timestamp: new Date().toISOString(),
+        message: 'Running in demo mode. Configure API keys to enable full functionality.',
+        version: require('./package.json').version,
+      });
+      return;
+    }
+
     const dbHealth = await databaseService.healthCheck();
     const queueService = require('./services/QueueService');
     const queueStats = await queueService.getQueueStats();
 
     res.json({
       status: 'healthy',
+      mode: 'production',
       timestamp: new Date().toISOString(),
       database: dbHealth,
       queues: queueStats,
