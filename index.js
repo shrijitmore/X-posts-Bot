@@ -178,12 +178,17 @@ const PORT = config.port;
 app.listen(PORT, () => {
   logger.info(`🚀 Twitter Bot server running on port ${PORT}`);
   logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  logger.info(`Mode: ${config.isDemoMode ? 'DEMO' : 'PRODUCTION'}`);
   logger.info(`Health check: http://localhost:${PORT}/health`);
   
-  // Run database cleanup on startup
-  databaseService.cleanup().catch(err => {
-    logger.warn('Initial database cleanup failed:', err.message);
-  });
+  if (config.isDemoMode) {
+    logger.info(`🎭 Demo Mode: Configure API keys in .env file to enable full functionality`);
+  } else {
+    // Run database cleanup on startup
+    databaseService.cleanup().catch(err => {
+      logger.warn('Initial database cleanup failed:', err.message);
+    });
+  }
 });
 
 module.exports = app;
