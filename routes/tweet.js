@@ -13,24 +13,20 @@ const { validate, schemas } = require('../utils/validation');
 const logger = require('../utils/logger');
 const config = require('../config');
 
-// Gemini AI client
-const ai = new GoogleGenAI({});
-
-// Twitter client
-const client = new TwitterApi({
-  appKey: process.env.TWITTER_API_KEY,
-  appSecret: process.env.TWITTER_API_SECRET,
-  accessToken: process.env.TWITTER_ACCESS_TOKEN,
-  accessSecret: process.env.TWITTER_ACCESS_SECRET,
+// Configure multer for file uploads
+const upload = multer({
+  dest: config.uploads.uploadDir,
+  limits: {
+    fileSize: config.uploads.maxFileSize,
+  },
+  fileFilter: (req, file, cb) => {
+    if (config.uploads.allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only images are allowed.'));
+    }
+  },
 });
-
-// Queue system to handle jobs sequentially
-let jobQueue = [];
-let isProcessing = false;
-
-// Store previous tweets to avoid repetition
-const previousTweets = [];
-const MAX_HISTORY = 10;
 
 // ---- Generate AI tweet from any prompt ----
 async function generateTweet(prompt, includeImage = false) {
