@@ -318,12 +318,19 @@ router.get('/history', async (req, res) => {
 router.get('/ai-suggestions/:category', async (req, res) => {
   try {
     const { category } = req.params;
-    const suggestions = await aiService.getTweetSuggestions(category);
+    
+    let suggestions;
+    if (config.isDemoMode) {
+      suggestions = demoService.getDemoSuggestions();
+    } else {
+      suggestions = await aiService.getTweetSuggestions(category);
+    }
     
     res.json({
       success: true,
       data: suggestions,
       category,
+      demoMode: config.isDemoMode,
     });
   } catch (error) {
     logger.error('Failed to get AI suggestions:', error.message);
