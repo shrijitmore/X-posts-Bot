@@ -42,47 +42,67 @@ router.get('/rate-status', async (req, res) => {
   }
 });
 
-// ---- Generate image based on prompt ----
-async function generateImage(prompt) {
+// ---- AI Tweet Generation (One-time) ----
+router.post('/ai-generate', async (req, res) => {
   try {
-    // For now, we'll use a placeholder image URL
-    // In a real implementation, you would integrate with an image generation API
-    // like DALL-E, Midjourney, or Stable Diffusion
-    return "https://picsum.photos/800/600";
-  } catch (err) {
-    console.error("❌ Image generation failed:", err.message);
-    return null;
-  }
-}
+    const validatedData = validate(schemas.aiGenerate, req.body);
+    const { prompt, includeImage, imagePrompt } = validatedData;
 
-// ---- Download image from URL ----
-async function downloadImage(url, filepath) {
-  try {
-    const response = await axios({
-      url,
-      method: 'GET',
-      responseType: 'stream'
+    // Generate AI tweet
+    const aiResult = await aiService.generateTweet(prompt, {
+      includeImage,
+      tone: req.body.tone || 'engaging',
     });
-    
-    // Ensure directory exists
-    const dir = path.dirname(filepath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    
-    // Save the file
-    const writer = fs.createWriteStream(filepath);
-    response.data.pipe(writer);
-    
-    return new Promise((resolve, reject) => {
-      writer.on('finish', resolve);
-      writer.on('error', reject);
+
+    res.json({
+      success: true,
+      data: {
+        text: aiResult.text,
+        includeImage: aiResult.includeImage,
+        generatedAt: aiResult.generatedAt,
+        prompt,
+      },
     });
-  } catch (err) {
-    console.error("❌ Failed to download image:", err.message);
-    throw err;
+
+  } catch (error) {
+    logger.error('AI tweet generation failed:', error.message);
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
   }
-}
+});
+
+// ---- AI Multiple Tweet Suggestions ----
+router.post('/ai-suggestions', async (req, res) => {
+  try {
+    const { prompt, count = 3, tone = 'engaging' } = req.body;
+    
+    if (!prompt || prompt.length < 10) {
+      return res.status(400).json({
+        success: false,
+        error: 'Prompt must be at least 10 characters long',
+      });
+    }
+
+    const suggestions = await aiService.generateMultipleTweets(prompt, count, {
+      tone,
+      variety: true,
+    });
+
+    res.json({
+      success: true,
+      data: suggestions,
+    });
+
+  } catch (error) {
+    logger.error('AI suggestions generation failed:', error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
 
 // ---- Process queue ----
 async function processQueue() {
