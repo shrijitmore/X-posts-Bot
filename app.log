@@ -1,0 +1,15 @@
+{"level":"warn","message":"🚨 DEMO MODE: Application is running in demo mode.","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.958Z"}
+{"level":"warn","message":"To enable full functionality, please configure the following environment variables:","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.960Z"}
+{"level":"warn","message":"- SUPABASE_URL: Your Supabase project URL","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.961Z"}
+{"level":"warn","message":"- SUPABASE_KEY: Your Supabase API key","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.961Z"}
+{"level":"warn","message":"- TWITTER_API_KEY: Your Twitter API key","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.961Z"}
+{"level":"warn","message":"- TWITTER_API_SECRET: Your Twitter API secret","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.961Z"}
+{"level":"warn","message":"- TWITTER_ACCESS_TOKEN: Your Twitter access token","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.962Z"}
+{"level":"warn","message":"- TWITTER_ACCESS_SECRET: Your Twitter access secret","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.962Z"}
+{"level":"warn","message":"- GEMINI_API_KEY: Your Google Gemini API key","service":"twitter-bot","timestamp":"2025-09-03T05:19:28.962Z"}
+{"level":"info","message":"🚀 Twitter Bot server running on port 8080","service":"twitter-bot","timestamp":"2025-09-03T05:19:29.565Z"}
+{"level":"info","message":"Environment: development","service":"twitter-bot","timestamp":"2025-09-03T05:19:29.566Z"}
+{"level":"info","message":"Mode: DEMO","service":"twitter-bot","timestamp":"2025-09-03T05:19:29.566Z"}
+{"level":"info","message":"Health check: http://localhost:8080/health","service":"twitter-bot","timestamp":"2025-09-03T05:19:29.567Z"}
+{"level":"info","message":"🎭 Demo Mode: Configure API keys in .env file to enable full functionality","service":"twitter-bot","timestamp":"2025-09-03T05:19:29.567Z"}
+{"level":"info","message":"Connected to Redis","service":"twitter-bot","timestamp":"2025-09-03T05:19:29.573Z"}
