@@ -231,72 +231,40 @@ router.post('/schedule', upload.single('image'), async (req, res) => {
   }
 });
 
-// Track rate limit status
-let rateLimitStatus = {
-  daily: {
-    limit: 17,
-    remaining: 17,
-    reset: 0
-  },
-  lastUpdated: 0
-};
-
-// Update rate limit status
-async function updateRateLimitStatus() {
+// ---- View Scheduled Tweets ----
+router.get('/scheduled', async (req, res) => {
   try {
-    const rateLimits = await client.v2.tweet('dummy', { dry_run: true })
-      .catch(error => error.rateLimit || null);
-      
-    if (rateLimits?.day) {
-      rateLimitStatus = {
-        daily: {
-          limit: rateLimits.day.limit,
-          remaining: rateLimits.day.remaining,
-          reset: rateLimits.day.reset * 1000 // Convert to milliseconds
-        },
-        lastUpdated: Date.now()
-      };
-    }
-    return rateLimitStatus;
+    const scheduledTweets = await databaseService.getScheduledTweets();
+    res.render('scheduled', { tweets: scheduledTweets });
   } catch (error) {
-    console.error("Failed to update rate limit status:", error);
-    return null;
+    logger.error('Failed to get scheduled tweets:', error.message);
+    res.render('error', { message: `❌ ${error.message}` });
   }
-}
+});
 
-// ---- Get Rate Limits ----
-router.get("/rate-status", async (req, res) => {
+// ---- Cancel Scheduled Tweet ----
+router.post('/cancel/:id', async (req, res) => {
   try {
-    const status = await updateRateLimitStatus();
-    if (!status) {
-      return res.status(500).json({
-        success: false,
-        error: "Failed to get rate limit status"
-      });
+    const { id } = req.params;
+    
+    await databaseService.updateScheduledTweet(id, { 
+      status: 'cancelled',
+      cancelled_at: new Date().toISOString(),
+    });
+
+    // Try to cancel from queue as well
+    // Note: This is a best effort - job might already be processed
+    try {
+      await queueService.cancelScheduledTweet(id);
+    } catch (queueError) {
+      logger.warn('Could not cancel job from queue:', queueError.message);
     }
 
-    const now = Date.now();
-    const resetTime = new Date(status.daily.reset);
-    const timeUntilReset = Math.max(0, status.daily.reset - now);
-    
-    res.json({
-      success: true,
-      limit: status.daily.limit,
-      remaining: status.daily.remaining,
-      reset: status.daily.reset,
-      resetTime: resetTime.toISOString(),
-      timeUntilReset: timeUntilReset,
-      status: status.daily.remaining > 0 ? "OK" : "RATE_LIMIT_REACHED",
-      message: status.daily.remaining > 0 
-        ? `You have ${status.daily.remaining} tweets remaining today.`
-        : `Daily limit reached. Resets in ${Math.ceil(timeUntilReset / (1000 * 60 * 60))} hours.`
-    });
+    logger.info('Tweet cancelled:', id);
+    res.render('success', { message: '✅ Tweet cancelled successfully' });
   } catch (error) {
-    console.error("Rate limit check failed:", error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
+    logger.error('Failed to cancel tweet:', error.message);
+    res.render('error', { message: `❌ ${error.message}` });
   }
 });
 
