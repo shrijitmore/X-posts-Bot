@@ -63,8 +63,8 @@ class QueueService {
 
     this.dailyQuotaResetQueue = new Queue('daily quota reset', {
       redis: {
-        host: config.redis.host,
         port: config.redis.port,
+        host: config.redis.host,
         password: config.redis.password,
       },
     });
