@@ -191,6 +191,17 @@ router.post('/schedule', upload.single('image'), async (req, res) => {
       time 
     } = validatedData;
 
+    // Clean up uploaded file if it exists
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
+    if (config.isDemoMode) {
+      return res.render('success', { 
+        message: '✅ Demo Mode: Tweet would be scheduled successfully in production mode! The scheduling system would use Redis-based queues to manage the 17 req/day limit efficiently. Configure API keys to enable real scheduling.',
+      });
+    }
+
     // Convert schedule type to cron expression
     let cronTime;
     switch (scheduleType) {
@@ -218,9 +229,8 @@ router.post('/schedule', upload.single('image'), async (req, res) => {
     // Process image if uploaded
     let imageUrl = null;
     if (req.file) {
-      // For now, we'll use a placeholder URL and clean up the file
+      // For now, we'll use a placeholder URL
       imageUrl = 'https://picsum.photos/800/600';
-      fs.unlinkSync(req.file.path);
     }
 
     // Create scheduled tweet record
@@ -251,11 +261,6 @@ router.post('/schedule', upload.single('image'), async (req, res) => {
   } catch (error) {
     logger.error('Tweet scheduling failed:', error.message);
     
-    // Clean up uploaded file if it exists
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
-
     res.render('error', { 
       message: `❌ ${error.message}`,
     });
