@@ -6,8 +6,10 @@ const logger = require('../utils/logger');
 class QueueService {
   constructor() {
     this.redisClient = Redis.createClient({
-      host: config.redis.host,
-      port: config.redis.port,
+      socket: {
+        host: config.redis.host,
+        port: config.redis.port,
+      },
       password: config.redis.password,
     });
 
@@ -17,6 +19,11 @@ class QueueService {
 
     this.redisClient.on('connect', () => {
       logger.info('Connected to Redis');
+    });
+
+    // Connect to Redis
+    this.redisClient.connect().catch(err => {
+      logger.error('Failed to connect to Redis:', err);
     });
 
     // Create different queues for different types of jobs
