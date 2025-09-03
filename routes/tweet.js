@@ -146,68 +146,90 @@ router.post('/post', upload.single('image'), async (req, res) => {
   }
 });
 
-// ---- Post tweet with retry logic for rate limiting ----
-async function postTweetWithRetry(tweetText, job, mediaId = null, retryCount = 0) {
+// ---- Schedule Tweet ----
+router.post('/schedule', upload.single('image'), async (req, res) => {
   try {
-    const rateStatus = await updateRateLimitStatus();
-    if (rateStatus && rateStatus.daily.remaining <= 0) {
-      return "RATE_LIMIT_REACHED";
+    const validatedData = validate(schemas.schedule, req.body);
+    const { 
+      text, 
+      scheduleType, 
+      customPrompt, 
+      imagePrompt, 
+      includeImage, 
+      customCron, 
+      time 
+    } = validatedData;
+
+    // Convert schedule type to cron expression
+    let cronTime;
+    switch (scheduleType) {
+      case 'everyMinute':
+        cronTime = '*/1 * * * *';
+        break;
+      case 'hourly':
+        cronTime = '0 * * * *';
+        break;
+      case 'daily':
+        const [hour, minute] = (time || '00:00').split(':');
+        cronTime = `${minute} ${hour} * * *`;
+        break;
+      case 'weekly':
+        const [wHour, wMinute] = (time || '00:00').split(':');
+        cronTime = `${wMinute} ${wHour} * * 0`; // Sunday
+        break;
+      case 'custom':
+        cronTime = customCron;
+        break;
+      default:
+        throw new Error('Invalid schedule type');
     }
 
-    const tweetOptions = {};
-    if (mediaId) {
-      tweetOptions.media = { media_ids: [mediaId] };
+    // Process image if uploaded
+    let imageUrl = null;
+    if (req.file) {
+      // For now, we'll use a placeholder URL and clean up the file
+      imageUrl = 'https://picsum.photos/800/600';
+      fs.unlinkSync(req.file.path);
     }
-    await client.v2.tweet(tweetText, tweetOptions);
 
-    await supabase
-      .from("scheduled_tweets")
-      .update({ status: "sent", text: tweetText })
-      .eq("id", job.id);
+    // Create scheduled tweet record
+    const scheduleData = {
+      schedule_type: scheduleType,
+      cron_time: cronTime,
+      status: 'scheduled',
+      custom_prompt: customPrompt || null,
+      include_image: includeImage === 'true' || includeImage === true,
+      image_url: imageUrl,
+      image_prompt: imagePrompt || null,
+      text: text || null,
+    };
 
-    return true;
+    const scheduledTweet = await databaseService.createScheduledTweet(scheduleData);
+
+    // Add to scheduled tweet queue
+    await queueService.addScheduledTweetJob({
+      ...scheduleData,
+      id: scheduledTweet.id,
+    }, cronTime);
+
+    logger.info('Tweet scheduled successfully:', scheduledTweet.id);
+    res.render('success', { 
+      message: '✅ Tweet scheduled successfully!',
+    });
+
   } catch (error) {
-    throw error;
+    logger.error('Tweet scheduling failed:', error.message);
+    
+    // Clean up uploaded file if it exists
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
+    res.render('error', { 
+      message: `❌ ${error.message}`,
+    });
   }
-}
-
-// ---- Add job to queue ----
-function enqueueTweetJob(tweet) {
-  jobQueue.push(tweet);
-  processQueue();
-}
-
-// ---- Schedule jobs based on cron intervals ----
-function scheduleTweetJob(tweet) {
-  const intervalMs = getIntervalMs(tweet.cron_time);
-  if (!intervalMs) return;
-
-  setInterval(() => {
-    enqueueTweetJob(tweet);
-  }, intervalMs);
-}
-
-// ---- Convert simple cron-like string to ms ----
-function getIntervalMs(cronTime) {
-  if (cronTime === "*/1 * * * *") return 60 * 1000;
-  if (cronTime === "0 * * * *") return 60 * 60 * 1000;
-  // Add more conversions if needed
-  return null;
-}
-
-// ---- Load scheduled tweets from Supabase ----
-async function loadScheduledTweets() {
-  const { data, error } = await supabase
-    .from("scheduled_tweets")
-    .select("*")
-    .eq("status", "scheduled");
-
-  if (error) return console.error("❌ Failed to load scheduled tweets:", error.message);
-
-  data.forEach((tweet) => scheduleTweetJob(tweet));
-}
-
-loadScheduledTweets();
+});
 
 // Track rate limit status
 let rateLimitStatus = {
