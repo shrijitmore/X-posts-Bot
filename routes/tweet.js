@@ -104,71 +104,47 @@ router.post('/ai-suggestions', async (req, res) => {
   }
 });
 
-// ---- Process queue ----
-async function processQueue() {
-  if (isProcessing || jobQueue.length === 0) return;
-  isProcessing = true;
-
-  const job = jobQueue.shift();
+// ---- Post Tweet Immediately ----
+router.post('/post', upload.single('image'), async (req, res) => {
   try {
-    console.log("⏰ Generating tweet content...");
-    const prompt = job.custom_prompt || job.text || "Share an interesting tech insight";
-    const tweetResult = await generateTweet(prompt, job.include_image);
+    const validatedData = validate(schemas.tweet, req.body);
+    const { text, imagePrompt } = validatedData;
 
-    if (!tweetResult || !tweetResult.text) throw new Error("AI failed to generate tweet");
-    const tweetText = tweetResult.text;
-
-    let mediaId = null;
-    if (job.include_image) {
-      console.log("🖼️ Processing image for tweet...");
-      const imageUrl = job.image_url || await generateImage(job.image_prompt || prompt);
-      if (imageUrl) {
-        const imagePath = path.join(__dirname, '../uploads', `image-${Date.now()}.jpg`);
-        await downloadImage(imageUrl, imagePath);
-        console.log("📤 Uploading image to Twitter...");
-        const mediaUpload = await client.v1.uploadMedia(imagePath);
-        mediaId = mediaUpload;
-        fs.unlinkSync(imagePath);
-      }
+    // Check rate limits
+    const rateLimitStatus = await twitterService.getRateLimitStatus();
+    if (rateLimitStatus.status !== 'OK') {
+      return res.status(429).render('error', {
+        message: `❌ ${rateLimitStatus.message}`,
+      });
     }
 
-    // Try to post tweet with retry logic for rate limiting
-    const postResult = await postTweetWithRetry(tweetText, job, mediaId);
+    // Prepare tweet data
+    const tweetData = {
+      text,
+      imagePrompt,
+      imageFile: req.file ? req.file.path : null,
+    };
 
-    if (postResult === "RATE_LIMIT_REACHED") {
-      // Reschedule the job for the next interval
-      console.log("🔄 Rate limit reached, rescheduling tweet...");
-      setTimeout(() => {
-        jobQueue.push(job);
-        processQueue();
-      }, getIntervalMs(job.cron_time) || 60 * 1000); // fallback to 1 min
-      return;
+    // Add to immediate tweet queue
+    await queueService.addTweetJob({ tweetData });
+
+    res.render('success', { 
+      message: '✅ Tweet queued for posting!',
+    });
+
+  } catch (error) {
+    logger.error('Tweet posting failed:', error.message);
+    
+    // Clean up uploaded file if it exists
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
     }
 
-    // Save tweet history to database for persistence
-    try {
-      const historyData = {
-        text: tweetText,
-        created_at: new Date().toISOString()
-      };
-      if (mediaId) {
-        historyData.has_image = true;
-        historyData.image_prompt = job.image_prompt || prompt;
-      }
-      await supabase.from("tweet_history").insert([historyData]).select();
-    } catch (err) {
-      console.warn("⚠️ Failed to save tweet to history:", err.message);
-    }
-
-    console.log("✅ AI Tweet posted:", tweetText);
-  } catch (err) {
-    console.error("❌ Tweet failed:", err.message);
-    await supabase.from("scheduled_tweets").update({ status: "failed" }).eq("id", job.id);
-  } finally {
-    isProcessing = false;
-    setTimeout(processQueue, 1000);
+    res.render('error', { 
+      message: `❌ ${error.message}`,
+    });
   }
-}
+});
 
 // ---- Post tweet with retry logic for rate limiting ----
 async function postTweetWithRetry(tweetText, job, mediaId = null, retryCount = 0) {
