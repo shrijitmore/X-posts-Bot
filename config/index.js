@@ -12,21 +12,21 @@ const config = {
   
   // Supabase Configuration
   supabase: {
-    url: process.env.SUPABASE_URL,
-    key: process.env.SUPABASE_KEY,
+    url: process.env.SUPABASE_URL || 'https://demo.supabase.co',
+    key: process.env.SUPABASE_KEY || 'demo-key',
   },
   
   // Twitter API Configuration
   twitter: {
-    apiKey: process.env.TWITTER_API_KEY,
-    apiSecret: process.env.TWITTER_API_SECRET,
-    accessToken: process.env.TWITTER_ACCESS_TOKEN,
-    accessSecret: process.env.TWITTER_ACCESS_SECRET,
+    apiKey: process.env.TWITTER_API_KEY || 'demo-key',
+    apiSecret: process.env.TWITTER_API_SECRET || 'demo-secret',
+    accessToken: process.env.TWITTER_ACCESS_TOKEN || 'demo-token',
+    accessSecret: process.env.TWITTER_ACCESS_SECRET || 'demo-access-secret',
   },
   
   // AI Configuration
   ai: {
-    geminiApiKey: process.env.GEMINI_API_KEY,
+    geminiApiKey: process.env.GEMINI_API_KEY || 'demo-gemini-key',
   },
   
   // Rate Limiting Configuration
