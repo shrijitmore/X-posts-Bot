@@ -59,11 +59,19 @@ router.post('/ai-generate', async (req, res) => {
     const validatedData = validate(schemas.aiGenerate, req.body);
     const { prompt, includeImage, imagePrompt } = validatedData;
 
-    // Generate AI tweet
-    const aiResult = await aiService.generateTweet(prompt, {
-      includeImage,
-      tone: req.body.tone || 'engaging',
-    });
+    let aiResult;
+    if (config.isDemoMode) {
+      aiResult = await demoService.generateDemoAITweet(prompt, {
+        includeImage,
+        tone: req.body.tone || 'engaging',
+      });
+    } else {
+      // Generate AI tweet
+      aiResult = await aiService.generateTweet(prompt, {
+        includeImage,
+        tone: req.body.tone || 'engaging',
+      });
+    }
 
     res.json({
       success: true,
@@ -72,6 +80,7 @@ router.post('/ai-generate', async (req, res) => {
         includeImage: aiResult.includeImage,
         generatedAt: aiResult.generatedAt,
         prompt,
+        demoMode: config.isDemoMode,
       },
     });
 
