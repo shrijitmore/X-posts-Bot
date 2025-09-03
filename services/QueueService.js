@@ -29,8 +29,8 @@ class QueueService {
     // Create different queues for different types of jobs
     this.tweetQueue = new Queue('tweet processing', {
       redis: {
-        host: config.redis.host,
         port: config.redis.port,
+        host: config.redis.host,
         password: config.redis.password,
       },
       defaultJobOptions: {
