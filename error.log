@@ -281,3 +281,134 @@
 {"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T07:33:15.209Z"}
 {"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884660000 failed:","service":"twitter-bot","timestamp":"2025-09-03T07:33:15.211Z"}
 {"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884660000 failed:","service":"twitter-bot","timestamp":"2025-09-03T07:33:15.214Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:15:09.711Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:09.712Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884780000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:09.712Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884780000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:09.719Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:15:14.812Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:14.813Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884720000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:14.814Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884720000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:14.818Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:15:16.502Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:16.503Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884660000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:16.504Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884660000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:16.506Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:15:23.917Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:23.918Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:23.918Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:23.922Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:15:30.679Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:30.680Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:30.684Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:30.695Z"}
+{"level":"error","message":"Failed to generate AI tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:48.678Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884780000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:48.679Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884780000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:48.683Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:15:54.675Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:15:54.676Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:54.677Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:15:54.680Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:16:05.428Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:16:05.429Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:05.429Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:05.432Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:16:12.360Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:16:12.361Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:12.362Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:12.366Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:16:29.144Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:16:29.145Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:29.146Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:29.148Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:16:31.272Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:16:31.273Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:31.273Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:31.276Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:16:32.887Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:16:32.888Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884720000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:32.889Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884720000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:32.898Z"}
+{"level":"error","message":"Failed to generate AI tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:16:36.994Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884660000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:36.995Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884660000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:16:36.997Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:17:03.254Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:17:03.256Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:03.257Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:03.260Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:17:05.388Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:17:05.394Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884780000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:05.396Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884780000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:05.404Z"}
+{"code":"PGRST116","details":"The result contains 0 rows","hint":null,"level":"error","message":"Supabase update error: Cannot coerce the result to a single JSON object","service":"twitter-bot","timestamp":"2025-09-03T09:17:07.392Z"}
+{"error":"Cannot coerce the result to a single JSON object","id":"a65e9bc8-8c0a-47de-a9ab-f0279e724213","level":"error","message":"Failed to update scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:17:07.393Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:07.393Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:07.396Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:17:10.464Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:10.468Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:10.470Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:17:27.052Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:27.055Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:27.057Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:17:48.285Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:48.287Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756884840000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:17:48.289Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:18:01.584Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:01.587Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:01.589Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:18:03.688Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:03.690Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:03.694Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:18:08.158Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:08.161Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:08.163Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:18:24.313Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:24.316Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756890960000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:24.321Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:18:25.660Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:25.664Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:18:25.668Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:19:01.701Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:01.704Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:01.708Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:19:03.256Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:03.258Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:03.261Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:19:08.651Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:08.654Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:08.656Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:19:20.097Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:20.099Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891020000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:20.101Z"}
+{"level":"error","message":"Failed to generate AI tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:19:29.668Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:29.669Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:19:29.671Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:20:01.610Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:01.613Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:01.615Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:20:05.864Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:05.867Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:05.869Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:20:08.340Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:08.343Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:08.346Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:20:19.746Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:19.748Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891080000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:19.750Z"}
+{"level":"error","message":"Failed to generate AI tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:20:24.597Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:24.598Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:20:24.600Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:21:01.685Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:01.688Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891200000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:01.690Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:21:03.322Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:03.324Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:03.327Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:21:10.072Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:10.074Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:10.076Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:21:22.532Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:22.534Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891140000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:22.536Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.136Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.139Z"}
+{"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.142Z"}
