@@ -5,13 +5,19 @@ const path = require('path');
 const fs = require('fs');
 
 // Import services and utilities
-const twitterService = require('../services/TwitterService');
-const aiService = require('../services/AIService');
-const databaseService = require('../services/DatabaseService');
-const queueService = require('../services/QueueService');
 const { validate, schemas } = require('../utils/validation');
 const logger = require('../utils/logger');
 const config = require('../config');
+const demoService = require('../services/DemoService');
+
+// Only import real services if not in demo mode
+let twitterService, aiService, databaseService, queueService;
+if (!config.isDemoMode) {
+  twitterService = require('../services/TwitterService');
+  aiService = require('../services/AIService');
+  databaseService = require('../services/DatabaseService');
+  queueService = require('../services/QueueService');
+}
 
 // Configure multer for file uploads
 const upload = multer({
