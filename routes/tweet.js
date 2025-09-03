@@ -268,149 +268,49 @@ router.post('/cancel/:id', async (req, res) => {
   }
 });
 
-// ---- API Endpoints ----
-router.post("/post", upload.single('image'), async (req, res) => {
+// ---- Tweet History API ----
+router.get('/history', async (req, res) => {
   try {
-    const { text, imagePrompt } = req.body;
-    if (!text) return res.status(400).send("Text required");
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 0;
     
-    // Check rate limits before attempting to post
-    const rateStatus = await updateRateLimitStatus();
-    if (rateStatus && rateStatus.daily.remaining <= 0) {
-      const resetTime = new Date(rateStatus.daily.reset);
-      const hoursUntilReset = Math.ceil((rateStatus.daily.reset - Date.now()) / (1000 * 60 * 60));
-      
-      return res.status(429).json({
-        success: false,
-        error: "RATE_LIMIT_REACHED",
-        message: `Daily tweet limit reached. You've used all ${rateStatus.daily.limit} tweets.`,
-        resetTime: resetTime.toISOString(),
-        timeUntilReset: `${hoursUntilReset} hours`,
-        limit: rateStatus.daily.limit,
-        remaining: 0
-      });
-    }
+    const history = await databaseService.getTweetHistory(limit, offset);
     
-    // Handle image if provided
-    let mediaId = null;
-    if (req.file) {
-      console.log("📤 Uploading provided image to Twitter...");
-      mediaId = await client.v1.uploadMedia(req.file.path);
-      
-      // Clean up the file
-      fs.unlinkSync(req.file.path);
-    } else if (imagePrompt) {
-      console.log("🖼️ Generating image from prompt...");
-      const imageUrl = await generateImage(imagePrompt);
-      
-      if (imageUrl) {
-        // Download the image
-        const imagePath = path.join(__dirname, '../uploads', `image-${Date.now()}.jpg`);
-        await downloadImage(imageUrl, imagePath);
-        
-        // Upload to Twitter
-        console.log("📤 Uploading generated image to Twitter...");
-        mediaId = await client.v1.uploadMedia(imagePath);
-        
-        // Clean up the file
-        fs.unlinkSync(imagePath);
-      }
-    }
-    
-    // Create tweet options
-    const tweetOptions = {};
-    
-    // Add media if available
-    if (mediaId) {
-      tweetOptions.media = { media_ids: [mediaId] };
-    }
-    
-    // Post the tweet
-    await client.v2.tweet(text, tweetOptions);
-    
-    res.render("success", { message: "✅ Tweet posted!" });
-  } catch (err) {
-    res.render("error", { message: `❌ ${err.message}` });
+    res.json({
+      success: true,
+      data: history,
+      pagination: {
+        limit,
+        offset,
+        hasMore: history.length === limit,
+      },
+    });
+  } catch (error) {
+    logger.error('Failed to get tweet history:', error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 });
 
-router.post("/schedule", upload.single('image'), async (req, res) => {
+// ---- AI Tweet Suggestions by Category ----
+router.get('/ai-suggestions/:category', async (req, res) => {
   try {
-    const { text, scheduleType, customPrompt, imagePrompt, includeImage, customCron, time } = req.body;
-    if (!scheduleType) return res.status(400).send("scheduleType required");
-
-    let cronTime;
-    if (scheduleType === "everyMinute") {
-      cronTime = "*/1 * * * *";
-    } else if (scheduleType === "hourly") {
-      cronTime = "0 * * * *";
-    } else if (scheduleType === "daily") {
-      // If time is provided, use it, otherwise default to midnight
-      const [hour, minute] = (time || "00:00").split(":");
-      cronTime = `${minute} ${hour} * * *`;
-    } else if (scheduleType === "weekly") {
-      // Default to Sunday at midnight, or use provided time
-      const [hour, minute] = (time || "00:00").split(":");
-      cronTime = `${minute} ${hour} * * 0`;
-    } else if (scheduleType === "custom" && customCron) {
-      cronTime = customCron;
-    } else {
-      return res.status(400).send("Unsupported schedule type");
-    }
-
-    // Process image if provided
-    let imageUrl = null;
-    if (req.file) {
-      imageUrl = "https://picsum.photos/800/600";
-      fs.unlinkSync(req.file.path);
-    }
-
-    const scheduleData = {
-      schedule_type: scheduleType,
-      cron_time: cronTime,
-      status: "scheduled",
-      custom_prompt: customPrompt || null,
-      include_image: includeImage === 'true' || includeImage === true,
-      image_url: imageUrl,
-      image_prompt: imagePrompt || null
-    };
-    if (text) {
-      scheduleData.text = text;
-    }
-
-    // Remove rate limit check here!
-
-    const { data, error } = await supabase
-      .from("scheduled_tweets")
-      .insert([scheduleData])
-      .select();
-
-    if (error) {
-      console.error(" Database error:", error);
-      return res.status(500).send("Failed to schedule tweet");
-    }
-
-    scheduleTweetJob(data[0]);
-    res.render("success", { message: " Tweet scheduled!" });
-  } catch (err) {
-    res.render("error", { message: ` ${err.message}` });
-  }
-});
-
-router.get("/scheduled", async (req, res) => {
-  const { data, error } = await supabase.from("scheduled_tweets").select("*");
-  if (error) return res.render("error", { message: ` ${error.message}` });
-  if (error) return res.render("error", { message: `❌ ${error.message}` });
-  res.render("scheduled", { tweets: data });
-});
-
-router.post("/cancel/:id", async (req, res) => {
-  try {
-    const id = Number(req.params.id);
-    await supabase.from("scheduled_tweets").update({ status: "cancelled" }).eq("id", id);
-    res.render("success", { message: "❌ Tweet cancelled" });
-  } catch (err) {
-    res.render("error", { message: `❌ ${err.message}` });
+    const { category } = req.params;
+    const suggestions = await aiService.getTweetSuggestions(category);
+    
+    res.json({
+      success: true,
+      data: suggestions,
+      category,
+    });
+  } catch (error) {
+    logger.error('Failed to get AI suggestions:', error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 });
 
