@@ -48,6 +48,14 @@ const config = {
     level: process.env.LOG_LEVEL || 'info',
     file: process.env.LOG_FILE || 'app.log',
   },
+
+  // Demo mode (when API keys are not configured)
+  isDemoMode: !process.env.SUPABASE_URL || 
+              !process.env.TWITTER_API_KEY || 
+              !process.env.GEMINI_API_KEY ||
+              process.env.SUPABASE_URL.includes('your_') ||
+              process.env.TWITTER_API_KEY.includes('your_') ||
+              process.env.GEMINI_API_KEY.includes('your_'),
 };
 
 module.exports = config;
