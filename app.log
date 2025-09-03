@@ -1055,3 +1055,83 @@
 {"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.139Z"}
 {"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.142Z"}
 {"level":"info","message":"SIGINT received, shutting down gracefully...","service":"twitter-bot","timestamp":"2025-09-03T09:21:49.075Z"}
+{"level":"info","message":"🚀 Twitter Bot server running on port 8080","service":"twitter-bot","timestamp":"2025-09-03T09:30:30.216Z"}
+{"level":"info","message":"Environment: development","service":"twitter-bot","timestamp":"2025-09-03T09:30:30.220Z"}
+{"level":"info","message":"Mode: PRODUCTION","service":"twitter-bot","timestamp":"2025-09-03T09:30:30.221Z"}
+{"level":"info","message":"Health check: http://localhost:8080/health","service":"twitter-bot","timestamp":"2025-09-03T09:30:30.222Z"}
+{"level":"info","message":"Connected to Redis","service":"twitter-bot","timestamp":"2025-09-03T09:30:30.380Z"}
+{"level":"info","message":"Database cleanup completed","service":"twitter-bot","timestamp":"2025-09-03T09:30:30.799Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T09:30:46.399Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully...","service":"twitter-bot","timestamp":"2025-09-03T09:31:01.175Z"}
+{"level":"info","message":"🚀 Twitter Bot server running on port 8080","service":"twitter-bot","timestamp":"2025-09-03T10:22:56.405Z"}
+{"level":"info","message":"Environment: development","service":"twitter-bot","timestamp":"2025-09-03T10:22:56.409Z"}
+{"level":"info","message":"Mode: PRODUCTION","service":"twitter-bot","timestamp":"2025-09-03T10:22:56.410Z"}
+{"level":"info","message":"Health check: http://localhost:8080/health","service":"twitter-bot","timestamp":"2025-09-03T10:22:56.411Z"}
+{"level":"info","message":"Connected to Redis","service":"twitter-bot","timestamp":"2025-09-03T10:22:56.569Z"}
+{"level":"info","message":"Database cleanup completed","service":"twitter-bot","timestamp":"2025-09-03T10:22:57.694Z"}
+{"length":162,"level":"info","message":"AI tweet generated successfully:","prompt":"Latest AI developments and their impact on product...","service":"twitter-bot","timestamp":"2025-09-03T10:23:12.605Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:23:18.598Z"}
+{"level":"info","message":"Added tweet job to queue: 1","service":"twitter-bot","timestamp":"2025-09-03T10:23:18.619Z"}
+{"imageFile":null,"level":"info","message":"Processing immediate tweet job: 1","service":"twitter-bot","text":"AI is BOOMING! 🤯 From smarter tools to faster workflows, productivity is getting a serious upgrade. What AI superpower has YOU most excited? 👇 #AI #Productivity","timestamp":"2025-09-03T10:23:18.648Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.097Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.114Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.119Z"}
+{"level":"info","message":"Tweet history saved:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.709Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.757Z"}
+{"imageFile":null,"level":"info","message":"Processing immediate tweet job: 1","service":"twitter-bot","text":"AI is BOOMING! 🤯 From smarter tools to faster workflows, productivity is getting a serious upgrade. What AI superpower has YOU most excited? 👇 #AI #Productivity","timestamp":"2025-09-03T10:23:21.727Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.042Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.044Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.045Z"}
+{"level":"info","message":"Tweet history saved:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.366Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.371Z"}
+{"imageFile":null,"level":"info","message":"Processing immediate tweet job: 1","service":"twitter-bot","text":"AI is BOOMING! 🤯 From smarter tools to faster workflows, productivity is getting a serious upgrade. What AI superpower has YOU most excited? 👇 #AI #Productivity","timestamp":"2025-09-03T10:23:28.372Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:23:28.845Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:23:28.846Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:28.847Z"}
+{"level":"info","message":"Tweet history saved:","service":"twitter-bot","timestamp":"2025-09-03T10:23:29.152Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:29.176Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully...","service":"twitter-bot","timestamp":"2025-09-03T10:24:49.601Z"}
+{"level":"info","message":"🚀 Twitter Bot server running on port 8080","service":"twitter-bot","timestamp":"2025-09-03T10:25:45.355Z"}
+{"level":"info","message":"Environment: development","service":"twitter-bot","timestamp":"2025-09-03T10:25:45.359Z"}
+{"level":"info","message":"Mode: PRODUCTION","service":"twitter-bot","timestamp":"2025-09-03T10:25:45.361Z"}
+{"level":"info","message":"Health check: http://localhost:8080/health","service":"twitter-bot","timestamp":"2025-09-03T10:25:45.362Z"}
+{"level":"info","message":"Connected to Redis","service":"twitter-bot","timestamp":"2025-09-03T10:25:45.463Z"}
+{"level":"info","message":"Database cleanup completed","service":"twitter-bot","timestamp":"2025-09-03T10:25:46.015Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:25:52.574Z"}
+{"length":231,"level":"info","message":"AI tweet generated successfully:","prompt":"Remote work tips for developers...","service":"twitter-bot","timestamp":"2025-09-03T10:26:47.363Z"}
+{"level":"info","message":"Added tweet job to queue: 2","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.064Z"}
+{"imageFile":null,"level":"info","message":"Processing immediate tweet job: 2","service":"twitter-bot","text":"Remote dev life got you coding in your PJs? 😅 Level up your WFH game! ➡️ Timeboxing, noise-canceling headphones, & scheduled breaks are your new besties. What are YOUR remote work secrets? Share below! 👇 #RemoteWork #DevLife #WFH","timestamp":"2025-09-03T10:26:52.077Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.597Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.600Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.606Z"}
+{"level":"info","message":"Tweet history saved:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.936Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.949Z"}
+{"imageFile":null,"level":"info","message":"Processing immediate tweet job: 2","service":"twitter-bot","text":"Remote dev life got you coding in your PJs? 😅 Level up your WFH game! ➡️ Timeboxing, noise-canceling headphones, & scheduled breaks are your new besties. What are YOUR remote work secrets? Share below! 👇 #RemoteWork #DevLife #WFH","timestamp":"2025-09-03T10:26:54.960Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.285Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.288Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.289Z"}
+{"level":"info","message":"Tweet history saved:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.609Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.615Z"}
+{"imageFile":null,"level":"info","message":"Processing immediate tweet job: 2","service":"twitter-bot","text":"Remote dev life got you coding in your PJs? 😅 Level up your WFH game! ➡️ Timeboxing, noise-canceling headphones, & scheduled breaks are your new besties. What are YOUR remote work secrets? Share below! 👇 #RemoteWork #DevLife #WFH","timestamp":"2025-09-03T10:27:01.625Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.030Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.032Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.033Z"}
+{"level":"info","message":"Tweet history saved:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.381Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.386Z"}
+{"level":"info","message":"SIGINT received, shutting down gracefully...","service":"twitter-bot","timestamp":"2025-09-03T10:27:25.448Z"}
+{"level":"info","message":"🚀 Twitter Bot server running on port 8080","service":"twitter-bot","timestamp":"2025-09-03T10:30:17.139Z"}
+{"level":"info","message":"Environment: development","service":"twitter-bot","timestamp":"2025-09-03T10:30:17.142Z"}
+{"level":"info","message":"Mode: PRODUCTION","service":"twitter-bot","timestamp":"2025-09-03T10:30:17.144Z"}
+{"level":"info","message":"Health check: http://localhost:8080/health","service":"twitter-bot","timestamp":"2025-09-03T10:30:17.144Z"}
+{"level":"info","message":"Connected to Redis","service":"twitter-bot","timestamp":"2025-09-03T10:30:17.239Z"}
+{"level":"info","message":"Database cleanup completed","service":"twitter-bot","timestamp":"2025-09-03T10:30:17.830Z"}
+{"level":"error","message":"Failed to create scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:30:18.339Z"}
+{"level":"error","message":"Tweet scheduling failed:","service":"twitter-bot","timestamp":"2025-09-03T10:30:18.340Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:30:26.438Z"}
+{"level":"error","message":"Failed to create scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:30:36.164Z"}
+{"level":"error","message":"Tweet scheduling failed:","service":"twitter-bot","timestamp":"2025-09-03T10:30:36.165Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:38:23.456Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:48:23.543Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T10:58:23.336Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T11:03:23.344Z"}
+{"level":"info","limit":17,"message":"Rate limit status updated:","remaining":17,"resetTime":"2025-09-04T00:00:00.000Z","service":"twitter-bot","timestamp":"2025-09-03T11:09:02.611Z"}

@@ -412,3 +412,25 @@
 {"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.136Z"}
 {"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.139Z"}
 {"level":"error","message":"Scheduled tweet job repeat:c43a515b11e2edfa7a70baf521849e3a:1756891260000 failed:","service":"twitter-bot","timestamp":"2025-09-03T09:21:27.142Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.097Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.119Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:19.757Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.042Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.045Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:22.371Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:23:28.845Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:28.847Z"}
+{"level":"error","message":"Tweet job 1 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:23:29.176Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.597Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.606Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:52.949Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.285Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.289Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:26:55.615Z"}
+{"level":"error","message":"Failed to post tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.030Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.033Z"}
+{"level":"error","message":"Tweet job 2 failed:","service":"twitter-bot","timestamp":"2025-09-03T10:27:02.386Z"}
+{"level":"error","message":"Failed to create scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:30:18.339Z"}
+{"level":"error","message":"Tweet scheduling failed:","service":"twitter-bot","timestamp":"2025-09-03T10:30:18.340Z"}
+{"level":"error","message":"Failed to create scheduled tweet:","service":"twitter-bot","timestamp":"2025-09-03T10:30:36.164Z"}
+{"level":"error","message":"Tweet scheduling failed:","service":"twitter-bot","timestamp":"2025-09-03T10:30:36.165Z"}

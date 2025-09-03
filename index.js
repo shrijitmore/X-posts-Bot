@@ -39,6 +39,15 @@ app.use(helmet({
 
 app.use(compression());
 
+
+app.set('trust proxy', (ip) => {
+  // Only trust Railway's proxy
+  return ip === '::ffff:127.0.0.1' || // Localhost
+         ip === '::1' ||              // IPv6 localhost
+         ip === '127.0.0.1' ||        // IPv4 localhost
+         ip.endsWith('.up.railway.app'); // Railway's domain
+});
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -57,7 +66,6 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 // View engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.set('trust proxy', true);
 
 // Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
