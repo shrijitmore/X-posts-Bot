@@ -130,6 +130,17 @@ router.post('/post', upload.single('image'), async (req, res) => {
     const validatedData = validate(schemas.tweet, req.body);
     const { text, imagePrompt } = validatedData;
 
+    if (config.isDemoMode) {
+      // Clean up uploaded file if it exists
+      if (req.file && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      
+      return res.render('success', { 
+        message: '✅ Demo Mode: Tweet would be posted immediately in production mode! Configure API keys to enable real posting.',
+      });
+    }
+
     // Check rate limits
     const rateLimitStatus = await twitterService.getRateLimitStatus();
     if (rateLimitStatus.status !== 'OK') {
