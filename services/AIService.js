@@ -1,13 +1,11 @@
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const config = require('../config');
 const logger = require('../utils/logger');
 const axios = require('axios');
 
 class AIService {
   constructor() {
-    this.ai = new GoogleGenAI({
-      apiKey: config.ai.geminiApiKey,
-    });
+    this.ai = new GoogleGenerativeAI(config.ai.geminiApiKey);
     
     // Store previous tweets to ensure variety
     this.previousTweets = [];
@@ -25,12 +23,10 @@ class AIService {
 
       const enhancedPrompt = this.buildPrompt(prompt, tone, maxLength, previousContext);
       
-      const response = await this.ai.models.generateContent({
-        model: 'gemini-2.0-flash',
-        contents: enhancedPrompt,
-      });
+      const model = this.ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const response = await model.generateContent(enhancedPrompt);
       
-      const tweetText = this.cleanTweetText(response.text, maxLength);
+      const tweetText = this.cleanTweetText(response.response.text(), maxLength);
       
       // Store in history to avoid repetition
       this.addToHistory(tweetText);
@@ -47,7 +43,17 @@ class AIService {
       };
     } catch (error) {
       logger.error('Failed to generate AI tweet:', error.message);
-      throw new Error(`AI tweet generation failed: ${error.message}`);
+      
+      // Provide more specific error messages
+      if (error.message.includes('API_KEY_INVALID') || error.message.includes('demo')) {
+        throw new Error('AI service not configured. Please set GEMINI_API_KEY in your .env file.');
+      } else if (error.message.includes('QUOTA_EXCEEDED')) {
+        throw new Error('AI service quota exceeded. Please check your Gemini API usage limits.');
+      } else if (error.message.includes('SAFETY')) {
+        throw new Error('AI service blocked content due to safety filters. Please try a different prompt.');
+      } else {
+        throw new Error(`AI tweet generation failed: ${error.message}`);
+      }
     }
   }
 
@@ -99,9 +105,8 @@ Important: Return ONLY the tweet text, no quotes, no explanations, no additional
 
   async generateImagePrompt(tweetText) {
     try {
-      const response = await this.ai.models.generateContent({
-        model: 'gemini-2.0-flash',
-        contents: `Based on this tweet: "${tweetText}"
+      const model = this.ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const response = await model.generateContent(`Based on this tweet: "${tweetText}"
 
 Create a short, descriptive image prompt (under 100 characters) that would create a relevant, engaging image for this tweet. Focus on:
 - Visual elements that complement the tweet
@@ -109,10 +114,9 @@ Create a short, descriptive image prompt (under 100 characters) that would creat
 - Avoid text in the image
 - Make it visually appealing for social media
 
-Return only the image prompt, no explanations.`,
-      });
+Return only the image prompt, no explanations.`);
       
-      const imagePrompt = response.text.replace(/^["']|["']$/g, '').trim();
+      const imagePrompt = response.response.text().replace(/^["']|["']$/g, '').trim();
       
       logger.info('Image prompt generated:', imagePrompt);
       return imagePrompt;

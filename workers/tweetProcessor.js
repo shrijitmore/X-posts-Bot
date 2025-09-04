@@ -62,15 +62,35 @@ class TweetProcessor {
     } catch (error) {
       logger.error(`Tweet job ${job.id} failed:`, error.message);
       
-      // Save failed attempt to history
-      await databaseService.saveTweetHistory({
-        text: tweetData.text,
-        has_image: !!tweetData.imageFile || !!tweetData.imageUrl,
-        image_prompt: tweetData.imagePrompt || null,
-        type: 'immediate',
-        status: 'failed',
-        error_message: error.message,
-      });
+      // Only save failed attempts to history if they're not due to API configuration issues
+      // This prevents cluttering the database with failed attempts due to missing/invalid API keys
+      const isConfigError = error.message.includes('demo') || 
+                           error.message.includes('credentials') ||
+                           error.message.includes('not configured') ||
+                           error.message.includes('invalid') ||
+                           error.message.includes('Unauthorized') ||
+                           error.message.includes('Forbidden') ||
+                           error.message.includes('Twitter API not configured') ||
+                           error.message.includes('Twitter API credentials are invalid') ||
+                           error.message.includes('Twitter API access forbidden') ||
+                           error.message.includes('Twitter API rate limit exceeded') ||
+                           error.message.includes('Request failed with code 429') || // Rate limit with demo keys
+                           error.code === 401 ||
+                           error.code === 403 ||
+                           error.code === 429; // Rate limit exceeded (likely due to demo keys)
+      
+      if (!isConfigError) {
+        await databaseService.saveTweetHistory({
+          text: tweetData.text,
+          has_image: !!tweetData.imageFile || !!tweetData.imageUrl,
+          image_prompt: tweetData.imagePrompt || null,
+          type: 'immediate',
+          status: 'failed',
+          error_message: error.message,
+        });
+      } else {
+        logger.info('Skipping database save for configuration error:', error.message);
+      }
 
       throw error;
     }
@@ -169,16 +189,35 @@ class TweetProcessor {
         });
       }
 
-      // Save failed attempt to history
-      await databaseService.saveTweetHistory({
-        text: scheduleData.text || scheduleData.custom_prompt,
-        has_image: scheduleData.include_image,
-        image_prompt: scheduleData.image_prompt || null,
-        type: 'scheduled',
-        schedule_type: scheduleData.schedule_type,
-        status: 'failed',
-        error_message: error.message,
-      });
+      // Only save failed attempts to history if they're not due to API configuration issues
+      const isConfigError = error.message.includes('demo') || 
+                           error.message.includes('credentials') ||
+                           error.message.includes('not configured') ||
+                           error.message.includes('invalid') ||
+                           error.message.includes('Unauthorized') ||
+                           error.message.includes('Forbidden') ||
+                           error.message.includes('Twitter API not configured') ||
+                           error.message.includes('Twitter API credentials are invalid') ||
+                           error.message.includes('Twitter API access forbidden') ||
+                           error.message.includes('Twitter API rate limit exceeded') ||
+                           error.message.includes('Request failed with code 429') || // Rate limit with demo keys
+                           error.code === 401 ||
+                           error.code === 403 ||
+                           error.code === 429; // Rate limit exceeded (likely due to demo keys)
+      
+      if (!isConfigError) {
+        await databaseService.saveTweetHistory({
+          text: scheduleData.text || scheduleData.custom_prompt,
+          has_image: scheduleData.include_image,
+          image_prompt: scheduleData.image_prompt || null,
+          type: 'scheduled',
+          schedule_type: scheduleData.schedule_type,
+          status: 'failed',
+          error_message: error.message,
+        });
+      } else {
+        logger.info('Skipping database save for configuration error:', error.message);
+      }
 
       throw error;
     }

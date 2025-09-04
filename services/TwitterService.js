@@ -2,6 +2,8 @@ const { TwitterApi } = require('twitter-api-v2');
 const config = require('../config');
 const logger = require('../utils/logger');
 const queueService = require('./QueueService');
+const dotenv = require('dotenv');
+dotenv.config();
 
 class TwitterService {
   constructor() {
@@ -49,13 +51,38 @@ class TwitterService {
       return result;
     } catch (error) {
       logger.error('Failed to post tweet:', error.message);
+      logger.error('Error details:', { 
+        message: error.message, 
+        code: error.code, 
+        status: error.status,
+        type: typeof error,
+        keys: Object.keys(error)
+      });
       
-      // Check if it's a rate limit error
-      if (error.code === 429 || error.message.includes('rate limit')) {
+      // Provide more specific error messages
+      if (error.message.includes('demo') || error.message.includes('credentials')) {
+        const newError = new Error('Twitter API not configured. Please set Twitter API credentials in your .env file.');
+        newError.code = error.code;
+        throw newError;
+      } else if (error.code === 401 || error.message.includes('Unauthorized')) {
+        const newError = new Error('Twitter API credentials are invalid. Please check your API keys and tokens.');
+        newError.code = error.code;
+        throw newError;
+      } else if (error.code === 429 || error.message.includes('rate limit')) {
         await this.updateRateLimitStatus();
+        const newError = new Error('Twitter API rate limit exceeded. Please wait before posting again.');
+        newError.code = error.code;
+        throw newError;
+      } else if (error.code === 403 || error.message.includes('Forbidden')) {
+        const newError = new Error('Twitter API access forbidden. Please check your app permissions.');
+        newError.code = error.code;
+        throw newError;
+      } else {
+        // Include the original error message for better debugging
+        const newError = new Error(`Twitter API error: ${error.message}`);
+        newError.code = error.code;
+        throw newError;
       }
-      
-      throw error;
     }
   }
 
